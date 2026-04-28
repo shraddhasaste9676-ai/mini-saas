@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue Tracker | Mini SaaS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <header>
+        <h1>IssueTracker</h1>
+        <nav>
+            <a th:href="@{/board}">Board</a>
+            <a th:href="@{/issue/new}" class="btn">Create Issue</a>
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-secondary" style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">Logout</button>
+            </form>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="board">
+            
+            <!-- TO DO Column -->
+            <div class="column">
+                <div class="column-header">
+                    <span>TO DO</span>
+                    <span class="badge badge-todo" th:text="${todoIssues.size()}">0</span>
+                </div>
+                <div class="column-body">
+                    <a th:each="issue : ${todoIssues}" th:href="@{/issue/{id}(id=${issue.id})}" class="issue-card">
+                        <div class="issue-title" th:text="${issue.title}">Task Title</div>
+                        <div class="issue-meta">
+                            <span th:text="${'#' + issue.id}">#1</span>
+                            <span th:if="${issue.assignee != null}" th:text="${issue.assignee.name}">Assignee</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- IN PROGRESS Column -->
+            <div class="column">
+                <div class="column-header">
+                    <span>IN PROGRESS</span>
+                    <span class="badge badge-progress" th:text="${inProgressIssues.size()}">0</span>
+                </div>
+                <div class="column-body">
+                    <a th:each="issue : ${inProgressIssues}" th:href="@{/issue/{id}(id=${issue.id})}" class="issue-card">
+                        <div class="issue-title" th:text="${issue.title}">Task Title</div>
+                        <div class="issue-meta">
+                            <span th:text="${'#' + issue.id}">#1</span>
+                            <span th:if="${issue.assignee != null}" th:text="${issue.assignee.name}">Assignee</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- IN REVIEW Column -->
+            <div class="column">
+                <div class="column-header">
+                    <span>IN REVIEW</span>
+                    <span class="badge badge-review" th:text="${inReviewIssues.size()}">0</span>
+                </div>
+                <div class="column-body">
+                    <a th:each="issue : ${inReviewIssues}" th:href="@{/issue/{id}(id=${issue.id})}" class="issue-card">
+                        <div class="issue-title" th:text="${issue.title}">Task Title</div>
+                        <div class="issue-meta">
+                            <span th:text="${'#' + issue.id}">#1</span>
+                            <span th:if="${issue.assignee != null}" th:text="${issue.assignee.name}">Assignee</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- DONE Column -->
+            <div class="column">
+                <div class="column-header">
+                    <span>DONE</span>
+                    <span class="badge badge-done" th:text="${doneIssues.size()}">0</span>
+                </div>
+                <div class="column-body">
+                    <a th:each="issue : ${doneIssues}" th:href="@{/issue/{id}(id=${issue.id})}" class="issue-card">
+                        <div class="issue-title" th:text="${issue.title}">Task Title</div>
+                        <div class="issue-meta">
+                            <span th:text="${'#' + issue.id}">#1</span>
+                            <span th:if="${issue.assignee != null}" th:text="${issue.assignee.name}">Assignee</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

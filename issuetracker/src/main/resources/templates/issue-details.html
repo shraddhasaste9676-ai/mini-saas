@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue Details | Mini SaaS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <header>
+        <h1>IssueTracker</h1>
+        <nav>
+            <a th:href="@{/board}">Board</a>
+            <a th:href="@{/issue/new}" class="btn">Create Issue</a>
+            <form th:action="@{/logout}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-secondary" style="padding: 0.25rem 0.75rem; font-size: 0.875rem;">Logout</button>
+            </form>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="details-layout">
+            
+            <div class="details-card">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                    <div>
+                        <span style="color: var(--text-secondary); font-size: 0.9rem;" th:text="${'Issue #' + issue.id}">#1</span>
+                        <h2 th:text="${issue.title}" style="margin: 0.5rem 0 1.5rem 0;">Issue Title</h2>
+                    </div>
+                    <span class="badge" th:classappend="${
+                        issue.status.name() == 'TO_DO' ? 'badge-todo' : 
+                        (issue.status.name() == 'IN_PROGRESS' ? 'badge-progress' : 
+                        (issue.status.name() == 'IN_REVIEW' ? 'badge-review' : 'badge-done'))
+                    }" th:text="${issue.status}" style="font-size: 1rem; padding: 0.4rem 1rem;">STATUS</span>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <h4 style="color: var(--text-secondary); margin-bottom: 0.5rem;">Description</h4>
+                    <p th:text="${issue.description ?: 'No description provided.'}" style="line-height: 1.6;"></p>
+                </div>
+
+                <div class="action-bar">
+                    <form th:action="@{/issue/{id}/status(id=${issue.id})}" method="post" style="display: flex; gap: 0.5rem; align-items: center; flex: 1;">
+                        <input type="hidden" name="redirectUrl" th:value="${'/issue/' + issue.id}" />
+                        <select name="status" class="form-control" style="width: auto;">
+                            <option th:each="s : ${statuses}" th:value="${s}" th:text="${s}" th:selected="${s == issue.status}"></option>
+                        </select>
+                        <button type="submit" class="btn">Update Status</button>
+                    </form>
+                    
+                    <form th:action="@{/issue/{id}/rollback(id=${issue.id})}" method="post" th:if="${!history.isEmpty()}">
+                        <button type="submit" class="btn btn-danger" title="Revert to previous status using stored procedure">Rollback Last Status</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="details-card">
+                <h3 style="margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Details</h3>
+                
+                <div style="margin-bottom: 1rem;">
+                    <span style="color: var(--text-secondary); display: block; font-size: 0.85rem; margin-bottom: 0.2rem;">Assignee</span>
+                    <strong th:text="${issue.assignee != null ? issue.assignee.name : 'Unassigned'}">User</strong>
+                </div>
+
+                <div style="margin-bottom: 2rem;">
+                    <span style="color: var(--text-secondary); display: block; font-size: 0.85rem; margin-bottom: 0.2rem;">Created</span>
+                    <strong th:text="${#temporals.format(issue.createdAt, 'dd MMM yyyy HH:mm')}">Date</strong>
+                </div>
+
+                <h3 style="margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Status History (Trigger Log)</h3>
+                
+                <p th:if="${history.isEmpty()}" style="color: var(--text-secondary); font-size: 0.9rem;">No status changes yet.</p>
+                
+                <ul class="history-list" th:unless="${history.isEmpty()}">
+                    <li class="history-item" th:each="h : ${history}">
+                        <div style="font-size: 0.9rem; margin-bottom: 0.2rem;">
+                            Changed from <strong th:text="${h.oldStatus}">OLD</strong> to <strong th:text="${h.newStatus}">NEW</strong>
+                        </div>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);" th:text="${#temporals.format(h.changedAt, 'dd MMM yyyy HH:mm:ss')}">
+                            Time
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

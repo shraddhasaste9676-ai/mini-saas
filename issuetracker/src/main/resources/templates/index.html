@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue Tracker - Home</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Issue Tracker</h1>
+            <div class="header-links">
+                <a href="/">Home</a>
+                <a href="/issues">Issues</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="card-grid">
+            <a href="/issues" class="card">
+                <div style="font-size: 32px; margin-bottom: 10px;">📋</div>
+                View All Issues
+            </a>
+            <a href="/issues?status=OPEN" class="card">
+                <div style="font-size: 32px; margin-bottom: 10px;">🔴</div>
+                Open Issues
+            </a>
+            <a href="/issues?status=IN_PROGRESS" class="card">
+                <div style="font-size: 32px; margin-bottom: 10px;">🟡</div>
+                In Progress
+            </a>
+            <a href="/issues?status=DONE" class="card">
+                <div style="font-size: 32px; margin-bottom: 10px;">✅</div>
+                Completed
+            </a>
+        </div>
+
+        <div style="margin-top: 40px; text-align: center;">
+            <a href="/issues" class="btn-link" style="display: inline-block;">Create New Issue</a>
+        </div>
+    </div>
+</body>
+</html>

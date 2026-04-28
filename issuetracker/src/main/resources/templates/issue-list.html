@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>All Issues</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <div class="topbar">
+        <h2>All Issues</h2>
+        <a th:href="@{/issues/new}" class="btn-link">+ New Issue</a>
+    </div>
+
+    <form method="get" th:action="@{/issues}" class="filter-box">
+        <select name="status">
+            <option value="">Filter by status</option>
+            <option th:each="status : ${statuses}" th:value="${status}" th:text="${status}"></option>
+        </select>
+        <button type="submit">Filter</button>
+        <a th:href="@{/issues}">Clear</a>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Created By</th>
+            <th>Assigned To</th>
+            <th>Update</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="issue : ${issues}">
+            <td th:text="${issue.id}"></td>
+            <td th:text="${issue.title}"></td>
+            <td th:text="${issue.description}"></td>
+            <td th:text="${issue.status}"></td>
+            <td th:text="${issue.createdBy != null ? issue.createdBy.name : 'N/A'}"></td>
+            <td th:text="${issue.assignedTo != null ? issue.assignedTo.name : 'Unassigned'}"></td>
+            <td>
+                <form th:action="@{/issues/{id}/status(id=${issue.id})}" method="post">
+                    <select name="status">
+                        <option th:each="status : ${statuses}" 
+                                th:value="${status}" 
+                                th:text="${status}">
+                        </option>
+                    </select>
+                    <button type="submit">Save</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <a th:href="@{/dashboard}">Back to Dashboard</a>
+</div>
+</body>
+</html>
