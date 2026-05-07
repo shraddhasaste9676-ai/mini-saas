@@ -1,0 +1,22 @@
+mini-saas/
+ ┣ src/
+ ┃ ┣ main/
+ ┃ ┃ ┣ java/com/example/minisaas/
+ ┃ ┃ ┃ ┣ config/
+ ┃ ┃ ┃ ┣ controller/
+ ┃ ┃ ┃ ┣ entity/
+ ┃ ┃ ┃ ┣ repository/
+ ┃ ┃ ┃ ┣ service/
+ ┃ ┃ ┃ ┣ dto/
+ ┃ ┃ ┃ ┗ MiniSaasApplication.java
+ ┃ ┃ ┣ resources/
+ ┃ ┃ ┃ ┣ static/
+ ┃ ┃ ┃ ┃ ┗ css/style.css
+ ┃ ┃ ┃ ┣ templates/
+ ┃ ┃ ┃ ┃ ┣ login.html
+ ┃ ┃ ┃ ┃ ┣ register.html
+ ┃ ┃ ┃ ┃ ┣ dashboard.html
+ ┃ ┃ ┃ ┃ ┣ issue-form.html
+ ┃ ┃ ┃ ┃ ┗ issue-list.html
+ ┃ ┃ ┃ ┗ application.properties
+ ┣ pom.xml
